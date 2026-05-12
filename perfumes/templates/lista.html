@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfumería</title>
+</head>
+<body>
+    <h1>Catálogo de Perfumes</h1>
+    {% for perfume in perfumes %}
+        <div>
+            <h2>{{ perfume.nombre }}</h2>
+            <p>Marca: {{ perfume.marca }}</p>
+            <p>Precio: ${{ perfume.precio }}</p>
+            <p>{{ perfume.ml }} ml | {{ perfume.get_genero_display }}</p>
+            <a href="{% url 'detalle_perfume' perfume.pk %}">Ver detalle</a>
+        </div>
+        <hr>
+    {% empty %}
+        <p>No hay perfumes registrados aún.</p>
+    {% endfor %}
+</body>
+</html>
