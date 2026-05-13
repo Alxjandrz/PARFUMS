@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ perfume.nombre }}</title>
+</head>
+<body>
+    <h1>{{ perfume.nombre }}</h1>
+    <p>Marca: {{ perfume.marca }}</p>
+    <p>Precio: ${{ perfume.precio }}</p>
+    <p>Tamaño: {{ perfume.ml }} ml</p>
+    <p>Género: {{ perfume.get_genero_display }}</p>
+    <p>Notas olfativas: {{ perfume.notas_olfativas }}</p>
+    <p>En stock: {% if perfume.en_stock %}Sí{% else %}No{% endif %}</p>
+    <a href="{% url 'lista_perfumes' %}">← Volver al catálogo</a>
+</body>
+</html>
