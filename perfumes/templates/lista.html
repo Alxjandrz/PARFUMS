@@ -1,22 +1,359 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Perfumería</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfumería Élite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: #0a0a0a;
+      color: #f0ece4;
+      min-height: 100vh;
+    }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1008 50%, #0a0a0a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(212,175,55,0.15) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-subtitle {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 6px;
+      color: #c9a84c;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: #f0ece4;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span { color: #c9a84c; }
+
+    .hero p {
+      font-size: 1rem;
+      color: #9e9890;
+      letter-spacing: 2px;
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    .btn-explorar {
+      display: inline-block;
+      padding: 16px 48px;
+      border: 1px solid #c9a84c;
+      color: #c9a84c;
+      text-decoration: none;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .btn-explorar:hover {
+      background: #c9a84c;
+      color: #0a0a0a;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.9), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #c9a84c;
+      letter-spacing: 2px;
+    }
+
+    .nav-links a {
+      color: #9e9890;
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-left: 32px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: #c9a84c; }
+
+    /* SECCIONES */
+    .seccion {
+      padding: 100px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .seccion-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .seccion-tag {
+      font-size: 0.75rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      margin-bottom: 16px;
+    }
+
+    .seccion-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      color: #f0ece4;
+      margin-bottom: 16px;
+    }
+
+    .seccion-linea {
+      width: 60px;
+      height: 1px;
+      background: #c9a84c;
+      margin: 0 auto;
+    }
+
+    /* SEPARADOR ENTRE SECCIONES */
+    .separador {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #c9a84c44, transparent);
+      margin: 0 auto;
+    }
+
+    /* GRID PERFUMES */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid #1e1e1e;
+      padding: 36px 28px;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(to right, #c9a84c, #f0d070);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover { border-color: #2a2a2a; transform: translateY(-4px); }
+    .card:hover::before { transform: scaleX(1); }
+
+    .card-categoria {
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      margin-bottom: 12px;
+    }
+
+    .card-nombre {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #f0ece4;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .card-marca {
+      font-size: 0.78rem;
+      color: #6e6860;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .card-detalles {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card-badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border: 1px solid #2a2a2a;
+      color: #9e9890;
+      letter-spacing: 1px;
+    }
+
+    .card-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #c9a84c;
+    }
+
+    .card-precio span {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.75rem;
+      color: #6e6860;
+      margin-left: 4px;
+    }
+
+    .stock-agotado {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      color: #6e6860;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    /* SECCION ÁRABE — fondo diferente */
+    .seccion-arabe {
+      background: linear-gradient(180deg, #0a0a0a 0%, #100a00 50%, #0a0a0a 100%);
+      padding: 100px 0;
+    }
+
+    .seccion-arabe .seccion {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 48px;
+      border-top: 1px solid #1a1a1a;
+      color: #3e3830;
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
 <body>
-    <h1>Catálogo de Perfumes</h1>
-    {% for perfume in perfumes %}
-        <div>
-            <h2>{{ perfume.nombre }}</h2>
-            <p>Marca: {{ perfume.marca }}</p>
-            <p>Precio: ${{ perfume.precio }}</p>
-            <p>{{ perfume.ml }} ml | {{ perfume.get_genero_display }}</p>
-            <a href="{% url 'detalle_perfume' perfume.pk %}">Ver detalle</a>
+
+  <nav>
+    <div class="nav-logo">Élite</div>
+    <div class="nav-links">
+      <a href="#disenador">Diseñador</a>
+      <a href="#arabe">Árabe</a>
+      <a href="/admin">Admin</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-subtitle">Colección exclusiva</p>
+    <h1>El arte de<br>la <span>fragancia</span></h1>
+    <p>Diseñador · Árabe · Exclusivo</p>
+    <a href="#disenador" class="btn-explorar">Explorar colección</a>
+  </section>
+
+  <!-- DISEÑADOR -->
+  <section id="disenador" class="seccion">
+    <div class="seccion-header">
+      <p class="seccion-tag">Alta perfumería</p>
+      <h2 class="seccion-titulo">Perfumes de Diseñador</h2>
+      <div class="seccion-linea"></div>
+    </div>
+    <div class="grid">
+      {% for perfume in disenador %}
+      <a href="{% url 'detalle_perfume' perfume.pk %}" class="card">
+        <p class="card-categoria">{{ perfume.get_categoria_display }}</p>
+        <h3 class="card-nombre">{{ perfume.nombre }}</h3>
+        <p class="card-marca">{{ perfume.marca }}</p>
+        <div class="card-detalles">
+          <span class="card-badge">{{ perfume.ml }} ml</span>
+          <span class="card-badge">{{ perfume.get_genero_display }}</span>
         </div>
-        <hr>
-    {% empty %}
-        <p>No hay perfumes registrados aún.</p>
-    {% endfor %}
+        <p class="card-precio">${{ perfume.precio }}<span>MXN</span></p>
+        {% if not perfume.en_stock %}
+          <span class="stock-agotado">— Agotado</span>
+        {% endif %}
+      </a>
+      {% empty %}
+        <p style="color:#6e6860">No hay perfumes de diseñador registrados.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  <!-- ÁRABE -->
+  <div class="seccion-arabe">
+    <section id="arabe" class="seccion">
+      <div class="seccion-header">
+        <p class="seccion-tag">Oriente místico</p>
+        <h2 class="seccion-titulo">Perfumes Árabes</h2>
+        <div class="seccion-linea"></div>
+      </div>
+      <div class="grid">
+        {% for perfume in arabes %}
+        <a href="{% url 'detalle_perfume' perfume.pk %}" class="card">
+          <p class="card-categoria">{{ perfume.get_categoria_display }}</p>
+          <h3 class="card-nombre">{{ perfume.nombre }}</h3>
+          <p class="card-marca">{{ perfume.marca }}</p>
+          <div class="card-detalles">
+            <span class="card-badge">{{ perfume.ml }} ml</span>
+            <span class="card-badge">{{ perfume.get_genero_display }}</span>
+          </div>
+          <p class="card-precio">${{ perfume.precio }}<span>MXN</span></p>
+          {% if not perfume.en_stock %}
+            <span class="stock-agotado">— Agotado</span>
+          {% endif %}
+        </a>
+        {% empty %}
+          <p style="color:#6e6860">No hay perfumes árabes registrados.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2026 Perfumería Élite — Todos los derechos reservados
+  </footer>
+
 </body>
 </html>
