@@ -13,11 +13,16 @@ class Perfume(models.Model):
         ('M', 'Mujer'),
         ('U', 'Unisex'),
     ]
+    CATEGORIA_CHOICES = [
+        ('D', 'Diseñador'),
+        ('A', 'Árabe'),
+    ]
     nombre = models.CharField(max_length=200)
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     precio = models.DecimalField(max_digits=8, decimal_places=2)
     ml = models.IntegerField(help_text="Mililitros")
     genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
+    categoria = models.CharField(max_length=1, choices=CATEGORIA_CHOICES, default='D')
     notas_olfativas = models.TextField(blank=True)
     en_stock = models.BooleanField(default=True)
 
