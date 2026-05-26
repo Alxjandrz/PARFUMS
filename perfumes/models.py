@@ -270,7 +270,7 @@ class Carrito(models.Model):
 
 # =========================
 # CarritoItem — Tabla intermedia Muchos a Muchos
-# =========================
+# ==========================
 class CarritoItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     carrito = models.ForeignKey(
