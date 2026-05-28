@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfumería Élite</title>
+  <title>Perfumeria Elite</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,7 +15,36 @@
       min-height: 100vh;
     }
 
-    /* HERO */
+    nav {
+      position: fixed;
+      top: 0; width: 100%;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #c9a84c;
+      letter-spacing: 2px;
+    }
+
+    .nav-links a {
+      color: #9e9890;
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-left: 32px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: #c9a84c; }
+
     .hero {
       height: 100vh;
       display: flex;
@@ -39,7 +68,6 @@
     }
 
     .hero-subtitle {
-      font-family: 'Raleway', sans-serif;
       font-size: 0.85rem;
       letter-spacing: 6px;
       color: #c9a84c;
@@ -71,7 +99,6 @@
       border: 1px solid #c9a84c;
       color: #c9a84c;
       text-decoration: none;
-      font-family: 'Raleway', sans-serif;
       font-size: 0.8rem;
       letter-spacing: 4px;
       text-transform: uppercase;
@@ -83,38 +110,6 @@
       color: #0a0a0a;
     }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; width: 100%;
-      padding: 24px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      background: linear-gradient(to bottom, rgba(10,10,10,0.9), transparent);
-    }
-
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      color: #c9a84c;
-      letter-spacing: 2px;
-    }
-
-    .nav-links a {
-      color: #9e9890;
-      text-decoration: none;
-      font-size: 0.8rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-left: 32px;
-      transition: color 0.3s;
-    }
-
-    .nav-links a:hover { color: #c9a84c; }
-
-    /* SECCIONES */
     .seccion {
       padding: 100px 48px;
       max-width: 1400px;
@@ -148,15 +143,12 @@
       margin: 0 auto;
     }
 
-    /* SEPARADOR ENTRE SECCIONES */
     .separador {
       width: 100%;
       height: 1px;
       background: linear-gradient(to right, transparent, #c9a84c44, transparent);
-      margin: 0 auto;
     }
 
-    /* GRID PERFUMES */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -166,7 +158,6 @@
     .card {
       background: #111;
       border: 1px solid #1e1e1e;
-      padding: 36px 28px;
       text-decoration: none;
       color: inherit;
       display: block;
@@ -188,6 +179,34 @@
 
     .card:hover { border-color: #2a2a2a; transform: translateY(-4px); }
     .card:hover::before { transform: scaleX(1); }
+
+    .card-img {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-img img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      transition: transform 0.5s ease;
+    }
+
+    .card-img-placeholder {
+      color: #2a2a2a;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .card:hover .card-img img { transform: scale(1.05); }
+
+    .card-body { padding: 28px; }
 
     .card-categoria {
       font-size: 0.65rem;
@@ -249,7 +268,6 @@
       margin-top: 8px;
     }
 
-    /* SECCION ÁRABE — fondo diferente */
     .seccion-arabe {
       background: linear-gradient(180deg, #0a0a0a 0%, #100a00 50%, #0a0a0a 100%);
       padding: 100px 0;
@@ -260,7 +278,16 @@
       padding-bottom: 0;
     }
 
-    /* FOOTER */
+    .seccion-nicho {
+      background: linear-gradient(180deg, #0a0a0a 0%, #080010 50%, #0a0a0a 100%);
+      padding: 100px 0;
+    }
+
+    .seccion-nicho .seccion {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
     footer {
       text-align: center;
       padding: 48px;
@@ -275,63 +302,42 @@
 <body>
 
   <nav>
-    <div class="nav-logo">Élite</div>
+    <div class="nav-logo">Elite</div>
     <div class="nav-links">
-      <a href="#disenador">Diseñador</a>
-      <a href="#arabe">Árabe</a>
+      <a href="#disenador">Disenador</a>
+      <a href="#arabe">Arabe</a>
+      <a href="#nicho">Nicho</a>
       <a href="/admin">Admin</a>
     </div>
   </nav>
 
-  <!-- HERO -->
   <section class="hero">
-    <p class="hero-subtitle">Colección exclusiva</p>
+    <p class="hero-subtitle">Coleccion exclusiva</p>
     <h1>El arte de<br>la <span>fragancia</span></h1>
-    <p>Diseñador · Árabe · Exclusivo</p>
-    <a href="#disenador" class="btn-explorar">Explorar colección</a>
+    <p>Disenador - Arabe - Nicho</p>
+    <a href="#disenador" class="btn-explorar">Explorar coleccion</a>
   </section>
 
-  <!-- DISEÑADOR -->
+  <!-- DISENADOR -->
   <section id="disenador" class="seccion">
     <div class="seccion-header">
-      <p class="seccion-tag">Alta perfumería</p>
-      <h2 class="seccion-titulo">Perfumes de Diseñador</h2>
+      <p class="seccion-tag">Alta perfumeria</p>
+      <h2 class="seccion-titulo">Perfumes de Disenador</h2>
       <div class="seccion-linea"></div>
     </div>
     <div class="grid">
       {% for perfume in disenador %}
       <a href="{% url 'detalle_perfume' perfume.pk %}" class="card">
-        <p class="card-categoria">{{ perfume.get_categoria_display }}</p>
-        <h3 class="card-nombre">{{ perfume.nombre }}</h3>
-        <p class="card-marca">{{ perfume.marca }}</p>
-        <div class="card-detalles">
-          <span class="card-badge">{{ perfume.ml }} ml</span>
-          <span class="card-badge">{{ perfume.get_genero_display }}</span>
+        <div class="card-img">
+          {% if perfume.imagen %}
+            <img src="{{ perfume.imagen.url }}" alt="{{ perfume.nombre }}">
+          {% elif perfume.imagen_url %}
+            <img src="{{ perfume.imagen_url }}" alt="{{ perfume.nombre }}">
+          {% else %}
+            <span class="card-img-placeholder">Sin imagen</span>
+          {% endif %}
         </div>
-        <p class="card-precio">${{ perfume.precio }}<span>MXN</span></p>
-        {% if not perfume.en_stock %}
-          <span class="stock-agotado">— Agotado</span>
-        {% endif %}
-      </a>
-      {% empty %}
-        <p style="color:#6e6860">No hay perfumes de diseñador registrados.</p>
-      {% endfor %}
-    </div>
-  </section>
-
-  <div class="separador"></div>
-
-  <!-- ÁRABE -->
-  <div class="seccion-arabe">
-    <section id="arabe" class="seccion">
-      <div class="seccion-header">
-        <p class="seccion-tag">Oriente místico</p>
-        <h2 class="seccion-titulo">Perfumes Árabes</h2>
-        <div class="seccion-linea"></div>
-      </div>
-      <div class="grid">
-        {% for perfume in arabes %}
-        <a href="{% url 'detalle_perfume' perfume.pk %}" class="card">
+        <div class="card-body">
           <p class="card-categoria">{{ perfume.get_categoria_display }}</p>
           <h3 class="card-nombre">{{ perfume.nombre }}</h3>
           <p class="card-marca">{{ perfume.marca }}</p>
@@ -341,18 +347,104 @@
           </div>
           <p class="card-precio">${{ perfume.precio }}<span>MXN</span></p>
           {% if not perfume.en_stock %}
-            <span class="stock-agotado">— Agotado</span>
+            <span class="stock-agotado">Agotado</span>
           {% endif %}
+        </div>
+      </a>
+      {% empty %}
+        <p style="color:#6e6860">No hay perfumes de disenador registrados.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <div class="separador"></div>
+
+  <!-- ARABE -->
+  <div class="seccion-arabe">
+    <section id="arabe" class="seccion">
+      <div class="seccion-header">
+        <p class="seccion-tag">Oriente mistico</p>
+        <h2 class="seccion-titulo">Perfumes Arabes</h2>
+        <div class="seccion-linea"></div>
+      </div>
+      <div class="grid">
+        {% for perfume in arabes %}
+        <a href="{% url 'detalle_perfume' perfume.pk %}" class="card">
+          <div class="card-img">
+            {% if perfume.imagen %}
+              <img src="{{ perfume.imagen.url }}" alt="{{ perfume.nombre }}">
+            {% elif perfume.imagen_url %}
+              <img src="{{ perfume.imagen_url }}" alt="{{ perfume.nombre }}">
+            {% else %}
+              <span class="card-img-placeholder">Sin imagen</span>
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <p class="card-categoria">{{ perfume.get_categoria_display }}</p>
+            <h3 class="card-nombre">{{ perfume.nombre }}</h3>
+            <p class="card-marca">{{ perfume.marca }}</p>
+            <div class="card-detalles">
+              <span class="card-badge">{{ perfume.ml }} ml</span>
+              <span class="card-badge">{{ perfume.get_genero_display }}</span>
+            </div>
+            <p class="card-precio">${{ perfume.precio }}<span>MXN</span></p>
+            {% if not perfume.en_stock %}
+              <span class="stock-agotado">Agotado</span>
+            {% endif %}
+          </div>
         </a>
         {% empty %}
-          <p style="color:#6e6860">No hay perfumes árabes registrados.</p>
+          <p style="color:#6e6860">No hay perfumes arabes registrados.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+
+  <div class="separador"></div>
+
+  <!-- NICHO -->
+  <div class="seccion-nicho">
+    <section id="nicho" class="seccion">
+      <div class="seccion-header">
+        <p class="seccion-tag">Exclusividad pura</p>
+        <h2 class="seccion-titulo">Perfumes de Nicho</h2>
+        <div class="seccion-linea"></div>
+      </div>
+      <div class="grid">
+        {% for perfume in nicho %}
+        <a href="{% url 'detalle_perfume' perfume.pk %}" class="card">
+          <div class="card-img">
+            {% if perfume.imagen %}
+              <img src="{{ perfume.imagen.url }}" alt="{{ perfume.nombre }}">
+            {% elif perfume.imagen_url %}
+              <img src="{{ perfume.imagen_url }}" alt="{{ perfume.nombre }}">
+            {% else %}
+              <span class="card-img-placeholder">Sin imagen</span>
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <p class="card-categoria">{{ perfume.get_categoria_display }}</p>
+            <h3 class="card-nombre">{{ perfume.nombre }}</h3>
+            <p class="card-marca">{{ perfume.marca }}</p>
+            <div class="card-detalles">
+              <span class="card-badge">{{ perfume.ml }} ml</span>
+              <span class="card-badge">{{ perfume.get_genero_display }}</span>
+            </div>
+            <p class="card-precio">${{ perfume.precio }}<span>MXN</span></p>
+            {% if not perfume.en_stock %}
+              <span class="stock-agotado">Agotado</span>
+            {% endif %}
+          </div>
+        </a>
+        {% empty %}
+          <p style="color:#6e6860">No hay perfumes de nicho registrados.</p>
         {% endfor %}
       </div>
     </section>
   </div>
 
   <footer>
-    &copy; 2026 Perfumería Élite — Todos los derechos reservados
+    2026 Perfumeria Elite
   </footer>
 
 </body>
