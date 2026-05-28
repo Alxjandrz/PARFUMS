@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Carrito - Elite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: #0a0a0a;
+      color: #f0ece4;
+      min-height: 100vh;
+    }
+
+    .carrito-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 48px 80px;
+    }
+
+    .volver {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #c9a84c;
+      text-decoration: none;
+      margin-bottom: 48px;
+      transition: opacity 0.3s;
+    }
+
+    .volver:hover { opacity: 0.6; }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: #f0ece4;
+      margin-bottom: 8px;
+    }
+
+    .linea-oro {
+      width: 60px;
+      height: 1px;
+      background: #c9a84c;
+      margin-bottom: 48px;
+    }
+
+    .tabla-carrito {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 48px;
+    }
+
+    .tabla-carrito th {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6e6860;
+      text-align: left;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #1a1a1a;
+      font-weight: 400;
+    }
+
+    .tabla-carrito td {
+      padding: 24px 0;
+      border-bottom: 1px solid #111;
+      vertical-align: center;
+    }
+
+    .item-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #f0ece4;
+      margin-bottom: 4px;
+    }
+
+    .item-info p {
+      font-size: 0.75rem;
+      color: #6e6860;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .precio-item, .subtotal-item {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #c9a84c;
+    }
+
+    .cantidad-item {
+      font-size: 1rem;
+      color: #9e9890;
+    }
+
+    .resumen-carrito {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 24px;
+      border-top: 1px solid #1a1a1a;
+      padding-top: 32px;
+    }
+
+    .total-bloque {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .total-label {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #6e6860;
+    }
+
+    .total-precio {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: #c9a84c;
+    }
+
+    .total-precio span {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.8rem;
+      color: #6e6860;
+      margin-left: 4px;
+    }
+
+    .btn-pedido {
+      display: inline-block;
+      padding: 16px 48px;
+      border: 1px solid #c9a84c;
+      color: #c9a84c;
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .btn-pedido:hover {
+      background: #c9a84c;
+      color: #0a0a0a;
+    }
+
+    .carrito-vacio {
+      color: #6e6860;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      font-weight: 300;
+    }
+
+    @media (max-width: 600px) {
+      .tabla-carrito th:nth-child(2), .tabla-carrito td:nth-child(2) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="carrito-container">
+    <a href="{% url 'lista_perfumes' %}" class="volver">Seguir explorando</a>
+    
+    <h1>Tu Colección Selecta</h1>
+    <div class="linea-oro"></div>
+
+    {% if carrito.items.all %}
+      <table class="tabla-carrito">
+        <thead>
+          <tr>
+            <th>Fragancia</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in carrito.items.all %}
+            <tr>
+              <td>
+                <div class="item-info">
+                  <h3>{{ item.perfume.nombre }}</h3>
+                  <p>{{ item.perfume.marca }} — {{ item.perfume.ml }}ml</p>
+                </div>
+              </td>
+              <td><span class="precio-item">${{ item.perfume.precio }}</span></td>
+              <td><span class="cantidad-item">{{ item.cantidad }}</span></td>
+              <td><span class="subtotal-item">${{ item.subtotal }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="resumen-carrito">
+        <div class="total-bloque">
+          <p class="total-label">Total estimado</p>
+          <p class="total-precio">${{ carrito.total }}<span>MXN</span></p>
+        </div>
+        <a href="#" class="btn-pedido">Confirmar Pedido Élite</a>
+      </div>
+    {% else %}
+      <p class="carrito-vacio">No has añadido ninguna fragancia a tu carrito todavía.</p>
+    {% endif %}
+  </div>
+
+</body>
+</html>

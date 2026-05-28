@@ -25,13 +25,13 @@ class PerfumeAdmin(admin.ModelAdmin):
     readonly_fields = ('ver_imagen_detalle', 'created_at')
 
     fieldsets = (
-        ('Informacion general', {
+        ('Información general', {
             'fields': ('nombre', 'marca', 'categoria', 'genero')
         }),
         ('Precio y stock', {
             'fields': ('precio', 'stock', 'ml', 'en_stock')
         }),
-        ('Descripcion', {
+        ('Descripción', {
             'fields': ('notas_olfativas',)
         }),
         ('Imagen', {
@@ -107,7 +107,8 @@ class CarritoAdmin(admin.ModelAdmin):
     inlines = [CarritoItemInline]
 
     def total_items(self, obj):
-        return obj.carritoitem_set.count()
+        # CORREGIDO: Se cambia 'carritoitem_set' por 'items' para cumplir con el related_name
+        return obj.items.count()
     total_items.short_description = 'Productos'
 
     def total_carrito(self, obj):
@@ -132,4 +133,3 @@ class CarritoItemAdmin(admin.ModelAdmin):
     def get_fecha(self, obj):
         return obj.carrito.created_at
     get_fecha.short_description = 'Fecha pedido'
-

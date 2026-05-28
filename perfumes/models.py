@@ -126,7 +126,8 @@ class Carrito(models.Model):
 
     @property
     def total(self):
-        return sum(item.subtotal for item in self.carritoitem_set.all())
+        # CORREGIDO: Se cambia 'carritoitem_set' por 'items'
+        return sum(item.subtotal for item in self.items.all())
 
 
 # =========================
