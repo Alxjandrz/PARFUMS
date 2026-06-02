@@ -189,35 +189,8 @@ python manage.py runserver
 
 ## 📁 Estructura del Proyecto
 
-```
-PARFUMS/
-│
-├── 📁 perfumeria/              # Carpeta principal del proyecto
-│   ├── asgi.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-│
-├── 📁 perfumes/                # Aplicación principal
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   └── views.py
-│
-├── 📁 migrations/              # Migraciones de base de datos
-│   └── 0001_initial.py
-│
-├── 📁 templates/               # Interfaces HTML
-│   ├── detalle.html
-│   ├── lista.html
-│   └── carrito.html
-│
-└── db.sqlite3                  # Base de datos
-```
+<img width="1024" height="1536" alt="Copilot_20260601_170431" src="https://github.com/user-attachments/assets/9838f032-0d3d-48fe-b2e2-06d974b2a2e4" />
 
----
 
 ### Carpeta perfumeria
 
