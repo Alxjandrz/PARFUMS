@@ -187,7 +187,8 @@ python manage.py runserver
 
 ## 📁 Estructura del Proyecto
 
-![Diagrama del proyecto PARFUMS](docs/diagrama_parfums.jpeg)
+<img width="1024" height="1536" alt="Copilot_20260601_170431" src="https://github.com/user-attachments/assets/0b881e2b-587c-4824-945e-d6ee5fd1a9c0" /> 
+
 
 ### Carpeta perfumeria
 
