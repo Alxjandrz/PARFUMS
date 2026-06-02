@@ -1,3 +1,5 @@
+<div align="center">
+
 # 🌸 PARFUMS
 ### Sistema Web de Gestión de Perfumería
 
@@ -187,8 +189,35 @@ python manage.py runserver
 
 ## 📁 Estructura del Proyecto
 
-<img width="1024" height="1536" alt="Copilot_20260601_170431" src="https://github.com/user-attachments/assets/0b881e2b-587c-4824-945e-d6ee5fd1a9c0" /> 
+```
+PARFUMS/
+│
+├── 📁 perfumeria/              # Carpeta principal del proyecto
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+│
+├── 📁 perfumes/                # Aplicación principal
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+│
+├── 📁 migrations/              # Migraciones de base de datos
+│   └── 0001_initial.py
+│
+├── 📁 templates/               # Interfaces HTML
+│   ├── detalle.html
+│   ├── lista.html
+│   └── carrito.html
+│
+└── db.sqlite3                  # Base de datos
+```
 
+---
 
 ### Carpeta perfumeria
 
@@ -199,6 +228,14 @@ El archivo `asgi.py` forma parte de la configuración principal del proyecto Dja
 Su función principal es preparar y ejecutar el proyecto utilizando ASGI, una tecnología que permite manejar múltiples conexiones y procesos de manera más eficiente.
 
 En este archivo también se indica cuál es la configuración principal del proyecto, utilizando el archivo `settings.py` de la carpeta Perfumeria. Finalmente, se crea la aplicación principal de Django para que el servidor pueda ejecutar correctamente el sistema web.
+
+```python
+import os
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Perfumeria.settings')
+application = get_asgi_application()
+```
 
 ---
 
@@ -248,6 +285,14 @@ El archivo `wsgi.py` forma parte de la configuración principal del proyecto Dja
 
 Su función principal es preparar el proyecto para que pueda ejecutarse correctamente en servidores web compatibles con WSGI. En este archivo se importa la configuración principal del proyecto utilizando `settings.py` y se crea la aplicación principal de Django, la cual será utilizada por el servidor para ejecutar el sistema web. Este archivo es importante porque permite que la aplicación pueda funcionar correctamente cuando se despliega en un entorno de producción.
 
+```python
+import os
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Perfumeria.settings')
+application = get_wsgi_application()
+```
+
 ---
 
 ### Carpeta perfumes
@@ -292,6 +337,14 @@ El archivo `apps.py` se encarga de configurar la aplicación `perfumes` dentro d
 
 Este archivo ayuda a que Django reconozca correctamente la aplicación `perfumes` y pueda integrarla con el resto del sistema.
 
+```python
+from django.apps import AppConfig
+
+class PerfumesConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'perfumes'
+```
+
 ---
 
 #### 📄 `models.py`
@@ -316,6 +369,88 @@ El modelo **CarritoItem** funciona como una tabla intermedia entre Carrito y Per
 
 En general, este archivo es el encargado de estructurar toda la base de datos del proyecto y definir las relaciones entre los diferentes modelos del sistema.
 
+```python
+import uuid
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    is_seller = models.BooleanField(default=False)
+    def __str__(self):
+        return self.username
+
+class Marca(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombre = models.CharField(max_length=100)
+    pais_origen = models.CharField(max_length=100)
+    def __str__(self):
+        return self.nombre
+
+class Perfume(models.Model):
+    GENERO_CHOICES = [('H','Hombre'),('M','Mujer'),('U','Unisex')]
+    CATEGORIA_CHOICES = [('D','Disenador'),('A','Arabe'),('N','Nicho')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombre = models.CharField(max_length=200)
+    marca = models.ForeignKey(Marca, on_delete=models.CASCADE, related_name='perfumes')
+    precio = models.DecimalField(max_digits=8, decimal_places=2)
+    stock = models.PositiveIntegerField(default=0)
+    ml = models.IntegerField(help_text="Mililitros")
+    genero = models.CharField(max_length=1, choices=GENERO_CHOICES)
+    categoria = models.CharField(max_length=1, choices=CATEGORIA_CHOICES, default='D')
+    notas_olfativas = models.TextField(blank=True)
+    en_stock = models.BooleanField(default=True)
+    imagen_url = models.URLField(max_length=500, blank=True, null=True)
+    imagen = models.ImageField(upload_to='perfumes/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.nombre} - {self.marca.nombre}"
+
+class Coleccion(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nombre = models.CharField(max_length=200)
+    descripcion = models.TextField(blank=True)
+    perfumes = models.ManyToManyField(Perfume, related_name='colecciones', blank=True)
+    fecha_inicio = models.DateField(null=True, blank=True)
+    fecha_fin = models.DateField(null=True, blank=True)
+    def __str__(self):
+        return self.nombre
+
+class Resena(models.Model):
+    CALIFICACION_CHOICES = [(1,'1 - Malo'),(2,'2 - Regular'),(3,'3 - Bueno'),(4,'4 - Muy bueno'),(5,'5 - Excelente')]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    perfume = models.ForeignKey(Perfume, on_delete=models.CASCADE, related_name='resenas')
+    nombre_cliente = models.CharField(max_length=100)
+    calificacion = models.IntegerField(choices=CALIFICACION_CHOICES)
+    comentario = models.TextField()
+    fecha = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.nombre_cliente} - {self.perfume.nombre} ({self.calificacion})"
+
+class Carrito(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carritos')
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"Carrito de {self.user.username}"
+    @property
+    def total(self):
+        return sum(item.subtotal for item in self.items.all())
+
+class CarritoItem(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE, related_name='items')
+    perfume = models.ForeignKey(Perfume, on_delete=models.CASCADE, related_name='carrito_items')
+    cantidad = models.PositiveIntegerField(default=1)
+    class Meta:
+        unique_together = ('carrito', 'perfume')
+    @property
+    def subtotal(self):
+        return self.perfume.precio * self.cantidad
+    def __str__(self):
+        return f"{self.perfume.nombre} x {self.cantidad} — {self.carrito.user.username}"
+```
+
 ---
 
 #### 📄 `tests.py`
@@ -331,6 +466,12 @@ En este caso, el archivo únicamente importa `TestCase` desde Django, una herram
 
 Aunque en este proyecto no se implementaron pruebas automáticas, el archivo forma parte de la estructura estándar de Django y permite expandir el sistema posteriormente.
 
+```python
+from django.test import TestCase
+
+# Create your tests here.
+```
+
 ---
 
 #### 📄 `urls.py` *(de la app perfumes)*
@@ -338,16 +479,25 @@ Aunque en este proyecto no se implementaron pruebas automáticas, el archivo for
 El archivo `urls.py` de la aplicación perfumes se encarga de definir las rutas internas del sistema y conectar las URLs con las views correspondientes.
 
 ```python
+from django.urls import path
+from . import views
+
 urlpatterns = [
-    path('',          views.lista_perfumes,  name='lista_perfumes'),
-    path('<int:pk>/', views.detalle_perfume, name='detalle_perfume'),
+    path('',                        views.lista_perfumes,     name='lista_perfumes'),
+    path('<uuid:pk>/',              views.detalle_perfume,    name='detalle_perfume'),
+    path('<uuid:pk>/agregar/',      views.agregar_al_carrito, name='agregar_al_carrito'),
+    path('carrito/',                views.ver_carrito,        name='ver_carrito'),
+    path('<uuid:pk>/resena/',       views.agregar_resena,     name='agregar_resena'),
 ]
 ```
 
 | Ruta | Vista | Descripción |
 |------|-------|-------------|
 | `''` | `lista_perfumes` | Página principal del catálogo |
-| `<int:pk>/` | `detalle_perfume` | Detalle individual de cada perfume |
+| `<uuid:pk>/` | `detalle_perfume` | Detalle individual de cada perfume |
+| `<uuid:pk>/agregar/` | `agregar_al_carrito` | Agrega un perfume al carrito del usuario |
+| `carrito/` | `ver_carrito` | Muestra el carrito del usuario activo |
+| `<uuid:pk>/resena/` | `agregar_resena` | Publica una nueva reseña de un perfume |
 
 El parámetro `pk` representa la clave primaria del perfume y permite identificar qué registro debe mostrarse. Gracias a este archivo, las URLs pueden comunicarse correctamente con las views para mostrar información dinámica dentro de la aplicación web.
 
@@ -358,8 +508,9 @@ El parámetro `pk` representa la clave primaria del perfume y permite identifica
 El archivo `views.py` contiene la lógica principal de la aplicación y se encarga de conectar los modelos con los templates para mostrar información al usuario.
 
 ```python
-from django.shortcuts import render, get_object_or_404
-from .models import Perfume, Coleccion, Resena
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Perfume, Coleccion, Resena, Carrito, CarritoItem
 
 def lista_perfumes(request):
     disenador = Perfume.objects.filter(categoria='D')
@@ -375,11 +526,50 @@ def detalle_perfume(request, pk):
     perfume     = get_object_or_404(Perfume, pk=pk)
     resenas     = perfume.resenas.all().order_by('-fecha')
     colecciones = perfume.colecciones.all()
+    carrito     = None
+    if request.user.is_authenticated:
+        carrito, _ = Carrito.objects.get_or_create(user=request.user)
     return render(request, 'perfumes/detalle.html', {
         'perfume':     perfume,
         'resenas':     resenas,
         'colecciones': colecciones,
+        'carrito':     carrito,
     })
+
+@login_required
+def agregar_al_carrito(request, pk):
+    if request.method == 'POST':
+        perfume  = get_object_or_404(Perfume, pk=pk)
+        cantidad = int(request.POST.get('cantidad', 1))
+        carrito, _ = Carrito.objects.get_or_create(user=request.user)
+        item, item_created = CarritoItem.objects.get_or_create(carrito=carrito, perfume=perfume)
+        if not item_created:
+            item.cantidad += cantidad
+        else:
+            item.cantidad = cantidad
+        item.save()
+        return redirect('ver_carrito')
+    return redirect('detalle_perfume', pk=pk)
+
+@login_required
+def ver_carrito(request):
+    carrito, _ = Carrito.objects.get_or_create(user=request.user)
+    return render(request, 'perfumes/carrito.html', {'carrito': carrito})
+
+def agregar_resena(request, pk):
+    if request.method == 'POST':
+        perfume        = get_object_or_404(Perfume, pk=pk)
+        nombre_cliente = request.POST.get('nombre_cliente', '').strip()
+        calificacion   = request.POST.get('calificacion')
+        comentario     = request.POST.get('comentario', '').strip()
+        if nombre_cliente and calificacion and comentario:
+            Resena.objects.create(
+                perfume=perfume,
+                nombre_cliente=nombre_cliente,
+                calificacion=int(calificacion),
+                comentario=comentario
+            )
+    return redirect('detalle_perfume', pk=pk)
 ```
 
 La función `lista_perfumes` se encarga de mostrar todos los perfumes organizados por categorías, realizando consultas con `Perfume.objects.filter()` para separar los perfumes en diseñador, árabes y nicho, enviando toda la información al template `lista.html`.
@@ -387,6 +577,12 @@ La función `lista_perfumes` se encarga de mostrar todos los perfumes organizado
 La función `detalle_perfume` se encarga de mostrar la información específica de un perfume seleccionado. Utiliza `get_object_or_404` para buscar el perfume mediante su identificador — si no existe, Django mostrará automáticamente un error 404. Luego obtiene las reseñas ordenadas por fecha y las colecciones relacionadas, enviando todo al template `detalle.html`.
 
 Gracias a este archivo, las views pueden comunicarse con los modelos, las URLs y los templates, permitiendo que la aplicación funcione dinámicamente y muestre información actualizada al usuario.
+
+La función `agregar_al_carrito` está protegida con `@login_required` y solo acepta peticiones `POST`. Obtiene o crea un carrito para el usuario activo, luego obtiene o crea el `CarritoItem` correspondiente. Si el producto ya existía en el carrito, incrementa la cantidad; de lo contrario, la establece con el valor del formulario.
+
+La función `ver_carrito` también requiere login y obtiene o crea el carrito del usuario activo, enviándolo al template `carrito.html` para su visualización.
+
+La función `agregar_resena` no requiere login y procesa el formulario de reseña del template `detalle.html`. Valida que los tres campos requeridos (nombre, calificación y comentario) no estén vacíos antes de crear el registro en la base de datos.
 
 ---
 
@@ -645,43 +841,6 @@ Funciona como la tabla intermedia explícita del carrito de compras. Es necesari
 
 ---
 
-## ✅ Funcionamiento CRUD
-
-El proyecto implementa operaciones **CRUD** completas desde el panel administrativo de Django, permitiendo gestionar toda la información de manera dinámica y organizada.
-
-| Operación | Panel Admin | Vista Pública | Descripción |
-|-----------|-------------|---------------|-------------|
-| ➕ **Create** | ✅ | ❌ | Agregar marcas, perfumes, colecciones, reseñas, carritos e ítems |
-| 👁️ **Read** | ✅ | ✅ | Visualizar catálogo con filtros, búsqueda y detalle individual |
-| ✏️ **Update** | ✅ | ❌ | Modificar cualquier campo de cualquier modelo |
-| 🗑️ **Delete** | ✅ | ❌ | Eliminar registros con confirmación del sistema |
-
-### Funcionalidades avanzadas del Admin
-
-- 🔍 **Buscador** en tiempo real por nombre de perfume y marca
-- 🔽 **Filtros laterales** por categoría, género, disponibilidad y marca
-- 🖼️ **Vista previa de imágenes** en miniatura dentro del listado
-- 📊 **Columnas calculadas** como total del carrito y conteo de perfumes por colección
-- 🔀 **Selector horizontal** para asignar perfumes a colecciones de forma visual
-- 📋 **Inline de CarritoItems** dentro del formulario de cada carrito
-
----
-
-## 🗃️ Diseño de la Base de Datos
-
-| Tabla | Campos principales | Relaciones |
-|-------|-------------------|------------|
-| `perfumes_user` | id (UUID), username, email, password, is_seller | → Carrito (1:N) |
-| `perfumes_marca` | id (UUID), nombre, pais_origen | → Perfume (1:N) |
-| `perfumes_perfume` | id (UUID), nombre, marca_id, precio, stock, ml, genero, categoria, imagen, imagen_url, en_stock, created_at | ← Marca, → Resena, ↔ Coleccion, ↔ CarritoItem |
-| `perfumes_coleccion` | id (UUID), nombre, descripcion, fecha_inicio, fecha_fin | ↔ Perfume (N:M) |
-| `perfumes_resena` | id (UUID), perfume_id, nombre_cliente, calificacion, comentario, fecha | ← Perfume |
-| `perfumes_carrito` | id (UUID), user_id, created_at | ← User, ↔ Perfume via CarritoItem |
-| `perfumes_carritoitem` | id (UUID), carrito_id, perfume_id, cantidad | ← Carrito, ← Perfume |
-| `perfumes_coleccion_perfumes` | id, coleccion_id, perfume_id | Tabla intermedia automática N:M |
-
----
-
 ## 📝 Conclusiones
 
 Durante el desarrollo del proyecto PARFUMS se logró comprender de manera práctica cómo funciona una aplicación web creada con Django, aplicando tanto conocimientos de programación como de bases de datos y desarrollo visual. A lo largo del proyecto fue posible observar cómo cada archivo y cada carpeta cumplen una función importante dentro de la estructura general del sistema, permitiendo que todas las partes trabajen de manera organizada y conectada entre sí.
@@ -714,3 +873,309 @@ Finalmente, este proyecto no solamente ayudó a fortalecer conocimientos técnic
 | 🛒 Carrito | Sistema completo con subtotales y total calculados |
 | 🔄 CRUD | Operaciones completas desde el panel administrativo |
 | 📦 Control de versiones | Proyecto publicado en GitHub con Git |
+
+---
+
+<div align="center">
+
+**Perfumería Élite — PARFUMS**
+*Tijuana, B.C. — 2026*
+
+![Python](https://img.shields.io/badge/Made%20with-Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Powered%20by-Django-092E20?style=flat-square&logo=django&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-Alxjandrz-181717?style=flat-square&logo=github&logoColor=white)
+
+</div>
+
+---
+
+## 🏛️ Arquitectura del Sistema PARFUMS
+
+El sistema PARFUMS fue desarrollado siguiendo la arquitectura **MTV (Model - Template - View)** de Django, la cual separa claramente las responsabilidades de cada componente del sistema:
+
+| Capa | Archivo | Responsabilidad |
+|------|---------|-----------------|
+| **Model** | `models.py` | Define la estructura de la base de datos y las relaciones entre tablas |
+| **Template** | `lista.html`, `detalle.html`, `carrito.html` | Interfaces visuales que muestran la información al usuario |
+| **View** | `views.py` | Lógica del sistema que conecta modelos con templates |
+| **URL** | `urls.py` | Enrutamiento de peticiones hacia las vistas correspondientes |
+
+El flujo de una petición dentro del sistema es el siguiente:
+
+```
+Usuario → URL → View → Model → Base de datos
+                  ↓
+              Template → Respuesta visual al usuario
+```
+
+---
+
+## 🔗 Relaciones de Base de Datos
+
+El proyecto PARFUMS fue desarrollado utilizando una base de datos relacional mediante Django ORM y SQLite, permitiendo establecer conexiones eficientes entre los diferentes modelos del sistema. Estas relaciones fueron fundamentales para organizar correctamente la información de la perfumería y facilitar la interacción entre los datos.
+
+### 🔷 Relaciones Uno a Muchos
+
+Dentro del sistema se implementaron varias relaciones de uno a muchos, donde un registro principal puede relacionarse con múltiples registros secundarios.
+
+#### Marca → Perfume
+Una marca puede tener múltiples perfumes registrados dentro del sistema, mientras que cada perfume pertenece únicamente a una marca específica.
+
+**Ejemplo:**
+- Dior → Sauvage, Fahrenheit, Homme Intense
+- Chanel → Bleu de Chanel, Allure Homme Sport
+
+Esta relación se implementó mediante una `ForeignKey` dentro del modelo Perfume.
+
+#### Perfume → Reseña
+Cada perfume puede recibir muchas reseñas por parte de diferentes usuarios o clientes, mientras que cada reseña pertenece únicamente a un perfume.
+
+Esto permite almacenar:
+- Comentarios
+- Calificaciones
+- Fechas de publicación
+
+para cada fragancia registrada.
+
+#### User → Carrito
+Un usuario puede tener múltiples carritos registrados en el sistema, mientras que cada carrito pertenece únicamente a un usuario específico. Esta relación se implementó mediante `ForeignKey` en el modelo Carrito apuntando al modelo User personalizado.
+
+### 🔶 Relaciones Muchos a Muchos
+
+También se implementaron relaciones de muchos a muchos para representar conexiones más complejas dentro del sistema.
+
+#### Perfume ↔ Colección
+Un perfume puede pertenecer a varias colecciones y, al mismo tiempo, una colección puede contener múltiples perfumes.
+
+**Ejemplo:**
+- Colección Verano → varios perfumes frescos
+- Colección Nicho Exclusivo → perfumes de lujo seleccionados
+
+Esta relación fue implementada utilizando `ManyToManyField` en Django ORM.
+
+#### Perfume ↔ Carrito (via CarritoItem)
+La relación entre perfumes y carritos se maneja mediante el modelo intermedio `CarritoItem`.
+
+Esto permite:
+- Agregar varios perfumes a un carrito
+- Controlar cantidades
+- Calcular subtotales
+- Evitar productos repetidos
+
+La tabla intermedia almacena información adicional necesaria para el funcionamiento del sistema de compras.
+
+---
+
+## ✅ Funcionamiento CRUD
+
+El proyecto PARFUMS implementa operaciones CRUD completas utilizando el panel administrativo de Django y las herramientas proporcionadas por Django ORM.
+
+CRUD representa las cuatro operaciones fundamentales utilizadas en cualquier sistema de gestión de datos:
+
+### ➕ Create (Crear)
+
+Permite registrar nueva información dentro de la base de datos. En el sistema se pueden crear:
+
+- Perfumes
+- Marcas
+- Colecciones
+- Reseñas
+- Usuarios
+- Carritos
+
+Estas operaciones se realizan principalmente desde el panel administrativo de Django.
+
+### 👁️ Read (Leer)
+
+Permite consultar y visualizar información almacenada en la base de datos. Dentro del sistema los usuarios pueden:
+
+- Visualizar el catálogo completo
+- Consultar detalles de perfumes
+- Revisar colecciones
+- Observar reseñas
+- Visualizar productos del carrito
+
+Las consultas son realizadas mediante Django ORM utilizando métodos como:
+
+```python
+Perfume.objects.all()
+Perfume.objects.filter(categoria='D')
+get_object_or_404(Perfume, pk=pk)
+```
+
+### ✏️ Update (Actualizar)
+
+Permite modificar registros existentes. Desde el panel administrativo se pueden actualizar:
+
+- Precios
+- Stock
+- Imágenes
+- Categorías
+- Reseñas
+- Información de marcas
+
+### 🗑️ Delete (Eliminar)
+
+Permite eliminar información almacenada en el sistema. Los administradores pueden eliminar:
+
+- Perfumes
+- Marcas
+- Reseñas
+- Colecciones
+- Productos del carrito
+
+Django administra automáticamente estas operaciones manteniendo la integridad de la base de datos.
+
+| Operación | Panel Admin | Vista Pública | Descripción |
+|-----------|-------------|---------------|-------------|
+| ➕ **Create** | ✅ | ❌ | Agregar marcas, perfumes, colecciones, reseñas, carritos e ítems |
+| 👁️ **Read** | ✅ | ✅ | Visualizar catálogo con filtros, búsqueda y detalle individual |
+| ✏️ **Update** | ✅ | ❌ | Modificar cualquier campo de cualquier modelo |
+| 🗑️ **Delete** | ✅ | ❌ | Eliminar registros con confirmación del sistema |
+
+---
+
+## 🗃️ Diseño de la Base de Datos
+
+El diseño de la base de datos fue desarrollado siguiendo principios de organización, escalabilidad y normalización para garantizar un sistema eficiente y fácil de mantener.
+
+### Modelos Principales
+
+| Tabla | Campos principales | Relaciones |
+|-------|-------------------|------------|
+| `perfumes_user` | id (UUID), username, email, password, is_seller | → Carrito (1:N) |
+| `perfumes_marca` | id (UUID), nombre, pais_origen | → Perfume (1:N) |
+| `perfumes_perfume` | id (UUID), nombre, marca_id, precio, stock, ml, genero, categoria, imagen, imagen_url, en_stock, created_at | ← Marca, → Resena, ↔ Coleccion, ↔ CarritoItem |
+| `perfumes_coleccion` | id (UUID), nombre, descripcion, fecha_inicio, fecha_fin | ↔ Perfume (N:M) |
+| `perfumes_resena` | id (UUID), perfume_id, nombre_cliente, calificacion, comentario, fecha | ← Perfume |
+| `perfumes_carrito` | id (UUID), user_id, created_at | ← User, ↔ Perfume via CarritoItem |
+| `perfumes_carritoitem` | id (UUID), carrito_id, perfume_id, cantidad | ← Carrito, ← Perfume |
+| `perfumes_coleccion_perfumes` | id, coleccion_id, perfume_id | Tabla intermedia automática N:M |
+
+### Normalización
+
+La base de datos fue organizada evitando redundancia de información mediante relaciones entre tablas. Esto permitió:
+
+- Mejorar el rendimiento
+- Reducir duplicidad de datos
+- Facilitar mantenimiento
+- Mantener integridad de la información
+
+### Django ORM
+
+El uso de Django ORM facilitó:
+
+- Creación automática de tablas
+- Manejo de relaciones
+- Consultas dinámicas
+- Migraciones automáticas
+- Seguridad en consultas
+
+Sin necesidad de escribir SQL manualmente en la mayoría del proyecto.
+
+---
+
+## 🖥️ Explicación del Panel Administrativo
+
+El panel administrativo de Django (`/admin`) es el centro de gestión del sistema PARFUMS. Desde aquí se administran todos los modelos con funcionalidades avanzadas.
+
+### 🧴 Artículos Carrito
+
+En el apartado de **Artículos Carrito** es donde aparecen los artículos que han escogido los usuarios dentro de la página, mostrando de quién es el carrito, el perfume seleccionado, su precio, cantidad y la marca del perfume.
+
+| Columna visible | Descripción |
+|----------------|-------------|
+| Perfume | Nombre de la fragancia seleccionada |
+| Usuario | Propietario del carrito |
+| Cantidad | Unidades seleccionadas |
+| Subtotal | Precio calculado en tiempo real |
+| Fecha pedido | Fecha de creación del carrito |
+
+---
+
+### 🛒 Carritos
+
+Dentro del apartado **Carritos** es donde aparecen los carritos de todos los usuarios que han entrado y seleccionado productos en la página. Muestra el usuario propietario, la fecha de creación, el total de productos y el total monetario calculado automáticamente.
+
+| Columna visible | Descripción |
+|----------------|-------------|
+| Usuario | Nombre del cliente |
+| Fecha creación | Cuándo se creó el carrito |
+| Productos | Cantidad de artículos distintos |
+| Total | Suma total calculada en tiempo real |
+
+Además, al entrar al detalle de un carrito, se pueden ver todos los productos que contiene gracias al **CarritoItemInline**, que muestra cada producto con su cantidad y subtotal directamente dentro del formulario.
+
+---
+
+### 🗂️ Colecciones
+
+En el apartado de **Colecciones** es donde aparecen los perfumes de temporadas, para que el usuario pueda elegir dependiendo de sus necesidades. Se muestran las fechas en las que están activas las colecciones y el total de perfumes que contiene cada una.
+
+El panel utiliza un **selector horizontal doble** (`filter_horizontal`) que permite asignar y remover perfumes de una colección de forma visual e intuitiva, sin necesidad de escribir nada manualmente.
+
+---
+
+### 🏷️ Marcas
+
+Dentro del apartado **Marcas** es donde se agregan las marcas de los perfumes con su nombre y su país de origen. Incluye buscador por nombre y ordenamiento alfabático automático.
+
+---
+
+### 🌸 Perfumes
+
+En el apartado **Perfumes** es donde se agregan los productos con toda su información: nombre, marca, precio, mililitros, género, categoría (Diseñador, Árabe, Nicho) e imagen del producto.
+
+El panel de perfumes incluye funcionalidades avanzadas:
+
+- 🔍 **Buscador** en tiempo real por nombre y marca
+- 🔽 **Filtros laterales** por categoría, género, disponibilidad y marca
+- 🖼️ **Vista previa de imagen** en miniatura dentro del listado
+- 📋 **Fieldsets** que organizan los campos en secciones limpias
+- 🗓️ **Fecha de registro** automática visible en modo solo lectura
+
+---
+
+### ⭐ Reseñas
+
+En el apartado de **Reseñas** es donde los clientes pueden reseñar los perfumes y dejar sus referencias y experiencia propia de cómo les fue con el perfume, para que a la hora de comprarlo ya tengan una idea y puedan elegir mejor dependiendo sus gustos.
+
+Tiene calificaciones del **1 al 5** para saber qué tan bueno es el perfume:
+
+| Calificación | Significado |
+|-------------|-------------|
+| ⭐ 1 | Malo |
+| ⭐⭐ 2 | Regular |
+| ⭐⭐⭐ 3 | Bueno |
+| ⭐⭐⭐⭐ 4 | Muy bueno |
+| ⭐⭐⭐⭐⭐ 5 | Excelente |
+
+El panel incluye filtros por calificación y por perfume, además de búsqueda por nombre de cliente, y se ordena por las más recientes primero.
+
+---
+
+## 🌐 Interfaz Pública del Catálogo
+
+En el catálogo público (`/perfumes/`) aparecen todos los productos con todas sus especificaciones organizados en tres secciones: **Diseñador**, **Árabe** y **Nicho**, donde el usuario puede elegir el que desee o el que le parezca un buen obsequio.
+
+### Vista de lista
+
+Cada perfume se muestra como una tarjeta visual con:
+- Imagen del producto
+- Nombre y marca
+- Mililitros y género
+- Precio en MXN
+- Indicador de disponibilidad
+
+### Vista de detalle
+
+Al dar clic en algún perfume, se muestra la información completa del producto. Si el perfume está disponible, aparece la opción de **Agregar al Carrito** con selector de cantidad. Al seguir bajando, el usuario puede dejar **reseñas** indicando qué tan bueno es el perfume según sus gustos personales, para guiar a otros compradores a tomar una mejor decisión.
+
+### Vista del carrito
+
+Al agregar un perfume al carrito, se muestra un resumen con:
+- El perfume seleccionado
+- Su precio unitario
+- La cantidad seleccionada
+- El subtotal por producto
+- El **total general** calculado automáticamente
