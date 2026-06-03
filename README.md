@@ -1164,12 +1164,18 @@ ARTICULOS CARRITO
 
 <img width="1365" height="613" alt="ART_CAR" src="https://github.com/user-attachments/assets/93f0e80e-33c5-4947-a369-6f201e050119" />
 
+Aquí en Articulos carrito es donde aparecen los artículos que han escogido dentro de la la página, de quien es, su precio, cantidad y la marca del perfume.
+
 CARRITOS
 
 <img width="684" height="356" alt="Carritos" src="https://github.com/user-attachments/assets/ee597682-4d6c-430b-a125-f358220892d0" />
 
+Dentro de el apartado carritos es donde aparecen los carritos de todos los usuarios que han entrado y seleccionado productos en la página.
+
 COLECCIONES
 <img width="668" height="374" alt="colecciones" src="https://github.com/user-attachments/assets/b5b94cd4-5bef-4b5c-bd4f-a0a437dceb27" />
+
+Aquí en las colecciones es donde aparecen los perfumes de temporadas, para que puedas elegir dependiendo de tus necesidades. Donde pone las fechas en las que están activas las colecciones.
 
 MARCAS
 
@@ -1181,6 +1187,8 @@ MARCAS
 
 <img width="686" height="384" alt="marcas_v4" src="https://github.com/user-attachments/assets/a679dbc7-d56e-45f8-b5dd-a66812a380cb" />
 
+Dentro de Marca es donde agregamos nuestros perfumes, sus marcas y su país de origen de nuestros productos.
+
 PERFUMES
 
 <img width="649" height="397" alt="perfumes_v1" src="https://github.com/user-attachments/assets/4e5e53ad-e1ef-45c5-b77d-c320bb44cb17" />
@@ -1189,11 +1197,15 @@ PERFUMES
 
 <img width="632" height="429" alt="perfumes_v3" src="https://github.com/user-attachments/assets/7b2c7804-ee3e-4d7b-bbe0-190cb5a2a145" />
 
+Aquí en Perfumes es donde agregamos nuestros productos ya con su nombre, marca, precio, mililitros, género, su categoría (diseñador, arabe, nicho). y su imagen del producto.
+
 RESEÑAS
 
 <img width="611" height="373" alt="reseñas_v1" src="https://github.com/user-attachments/assets/67ea9d8a-04ef-44ee-8674-6b2c63e67700" />
 
 <img width="636" height="375" alt="reseñas_v2" src="https://github.com/user-attachments/assets/d1862f43-b6d4-4513-9c05-9507da3899d5" />
+
+Aquí en reseñas es donde pueden reseñar los perfumes y dejar sus referencias y experiencia propia de cómo les fue con el perfume, para que a la hora de comprarlo ya tengas una idea y puedas elegir mejor dependiendo tus gustos. Tiene clasificaciones del 1 al 5 para saber qué tan bueno es.
 
 
 CAPTURAS PERFUMES(PROGRAMA EN EJECUCION)
@@ -1210,6 +1222,8 @@ CAPTURAS PERFUMES(PROGRAMA EN EJECUCION)
 
 <img width="555" height="366" alt="pantalla_6" src="https://github.com/user-attachments/assets/07c40541-5288-484e-aa80-5d1d5f0afc26" />
 
+Aquí en nuestro catálogo nos aparecen ya todos nuestros productos, con todas sus especificaciones, donde puedes elegir el que desees o el que te parezca un buen obsequio.
+
 <img width="558" height="330" alt="pantalla_7" src="https://github.com/user-attachments/assets/f564c829-3de6-4863-812c-f4c2a1463cc7" />
 
 <img width="562" height="296" alt="pantalla_8" src="https://github.com/user-attachments/assets/3ef34e3a-1a89-461b-bb3e-7e59a1345092" />
@@ -1217,6 +1231,14 @@ CAPTURAS PERFUMES(PROGRAMA EN EJECUCION)
 <img width="590" height="344" alt="pantalla_9" src="https://github.com/user-attachments/assets/c10051a7-4a3c-4388-ae92-2b999c4f3276" />
 
 <img width="607" height="354" alt="pantalla_10" src="https://github.com/user-attachments/assets/07bf74f6-2c18-489c-a060-7c4d7616cb8a" />
+
+Al dar click en algún perfume, nos da la opción de agregar al carrito, pero al seguir bajando nos deja dejar reseñas de qué tan bueno es el perfume en los gustos personales de cada persona, para poderte guiar y poder tomar una mejor decisión.
+También al agregar al carrito nos da el perfume que elegiste, su precio y la cantidad a pagar dependiendo cuantos seleccionaste.
+
+
+
+
+
 
 
 
