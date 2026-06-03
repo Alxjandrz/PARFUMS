@@ -1157,18 +1157,22 @@ Al agregar un perfume al carrito, se muestra un resumen con:
 CAPTURAS DE ADMIN 
 
 INICIO DEL ADMIN
+
 <img width="1358" height="611" alt="articulos carritos" src="https://github.com/user-attachments/assets/38c562b5-e55d-43ff-b9e1-0188a0c360f2" />
 
 ARTICULOS CARRITO
+
 <img width="1365" height="613" alt="ART_CAR" src="https://github.com/user-attachments/assets/93f0e80e-33c5-4947-a369-6f201e050119" />
 
 CARRITOS
+
 <img width="684" height="356" alt="Carritos" src="https://github.com/user-attachments/assets/ee597682-4d6c-430b-a125-f358220892d0" />
 
 COLECCIONES
 <img width="668" height="374" alt="colecciones" src="https://github.com/user-attachments/assets/b5b94cd4-5bef-4b5c-bd4f-a0a437dceb27" />
 
 MARCAS
+
 <img width="664" height="344" alt="marcas_v1" src="https://github.com/user-attachments/assets/e76dae33-6907-4a7e-99e8-4eaf3cb92feb" />
 
 <img width="694" height="369" alt="marcas_v2" src="https://github.com/user-attachments/assets/91813676-6a60-4fed-8661-b9963bcf5e06" />
@@ -1176,7 +1180,9 @@ MARCAS
 <img width="657" height="337" alt="marcas_v3" src="https://github.com/user-attachments/assets/cb69d8d6-adf6-4423-b3e0-ec860c0ffdee" />
 
 <img width="686" height="384" alt="marcas_v4" src="https://github.com/user-attachments/assets/a679dbc7-d56e-45f8-b5dd-a66812a380cb" />
- PERFUMES
+
+PERFUMES
+
 <img width="649" height="397" alt="perfumes_v1" src="https://github.com/user-attachments/assets/4e5e53ad-e1ef-45c5-b77d-c320bb44cb17" />
 
 <img width="617" height="390" alt="perfumes_v2" src="https://github.com/user-attachments/assets/1b75e01e-2bcb-4463-96a1-fa40c97d918a" />
@@ -1184,6 +1190,7 @@ MARCAS
 <img width="632" height="429" alt="perfumes_v3" src="https://github.com/user-attachments/assets/7b2c7804-ee3e-4d7b-bbe0-190cb5a2a145" />
 
 RESEÑAS
+
 <img width="611" height="373" alt="reseñas_v1" src="https://github.com/user-attachments/assets/67ea9d8a-04ef-44ee-8674-6b2c63e67700" />
 
 <img width="636" height="375" alt="reseñas_v2" src="https://github.com/user-attachments/assets/d1862f43-b6d4-4513-9c05-9507da3899d5" />
